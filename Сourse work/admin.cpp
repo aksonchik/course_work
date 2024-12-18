@@ -75,8 +75,8 @@ void handleAdminEmployeeMenu(EmployeeManager& employeeManager) {
             cout << "Ф.И.О. сотрудника: ";
             getline(cin, fullName);
 
-            cout << "Номер бригады: ";
-            cin >> teamNumber;
+            // Запрашиваем валидный номер бригады
+            teamNumber = employeeManager.getValidTeamNumber();
 
             cout << "Средний доход за последние 3 месяца: ";
             cin >> averageIncome;
