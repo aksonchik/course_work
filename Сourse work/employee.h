@@ -29,4 +29,5 @@ public:
     void listEmployees() const;
     void listEmployeeNames() const;
     void deleteEmployee(const string& fullName);
+    string getValidTeamNumber() const;
 };
