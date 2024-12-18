@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -72,10 +73,18 @@ void EmployeeManager::listEmployees() const {
         cout << "Список сотрудников пуст.\n";
         return;
     }
+    cout << left << setw(25) << "Ф.И.О."
+        << setw(15) << "Бригада"
+        << setw(15) << "Средний доход"
+        << setw(30) << "Участие в общественной деятельности"
+        << setw(25) << "Доход на члена семьи" << "\n";
+    cout << string(110, '-') << "\n";
     for (const auto& emp : sortedEmployees) {
-        cout << "Ф.И.О.: " << emp.fullName << ", Номер бригады: " << emp.teamNumber
-            << ", Средний доход: " << emp.averageIncome << ", Участие в общественной деятельности: "
-            << (emp.communityInvolvement ? "Да" : "Нет") << ", Доход на одного члена семьи: " << emp.familyIncomePerCapita << "\n";
+        cout << left << setw(25) << emp.fullName
+            << setw(15) << emp.teamNumber
+            << setw(15) << emp.averageIncome
+            << setw(30) << (emp.communityInvolvement ? "Да" : "Нет")
+            << setw(25) << emp.familyIncomePerCapita << "\n";
     }
 }
 
