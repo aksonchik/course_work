@@ -1,6 +1,4 @@
-#ifndef EMPLOYEE_H
-#define EMPLOYEE_H
-
+#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -12,9 +10,9 @@ public:
     struct Employee {
         string fullName;
         string teamNumber;
-        double averageIncome;
-        bool communityInvolvement;
-        double familyIncomePerCapita;
+        double averageIncome = 0.0;
+        bool communityInvolvement = false;
+        double familyIncomePerCapita = 0.0;
     };
 
 private:
@@ -29,8 +27,6 @@ public:
     void addEmployee(const string& fullName, const string& teamNumber, double averageIncome, bool communityInvolvement, double familyIncomePerCapita);
     const vector<Employee> getSortedEmployees() const;
     void listEmployees() const;
-    void listEmployeeNames() const;  // Новая функция для вывода имен и фамилий сотрудников
+    void listEmployeeNames() const;
     void deleteEmployee(const string& fullName);
 };
-
-#endif // EMPLOYEE_H

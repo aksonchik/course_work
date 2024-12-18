@@ -74,14 +74,11 @@ void handleUserMenu(UserManager& userManager, EmployeeManager& employeeManager, 
         getInputWithRange(command, 1, 4);
 
         if (command == "1") {
-            const vector<EmployeeManager::Employee> sortedEmployees = employeeManager.getSortedEmployees();
-            cout << "\n=== Очередность предоставления мест в общежитии ===\n";
-            for (const auto& emp : sortedEmployees) {
-                cout << "Ф.И.О.: " << emp.fullName
-                    << ", Номер бригады: " << emp.teamNumber
-                    << ", Средний доход: " << emp.averageIncome
-                    << ", Участие в общественной деятельности: " << (emp.communityInvolvement ? "Да" : "Нет")
-                    << ", Доход на одного члена семьи: " << emp.familyIncomePerCapita << "\n";
+            if (userManager.isCurrentUserAdmin()) {
+                employeeManager.listEmployees(); // Вывод всех данных для администратора
+            }
+            else {
+                employeeManager.listEmployeeNames(); // Вывод только Ф.И.О. для обычного пользователя
             }
         }
         else if (command == "2") {
