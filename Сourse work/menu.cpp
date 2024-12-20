@@ -1,9 +1,7 @@
 #include "menu.h"
 #include "getPassword.h"
-#include "Checks.h"
+#include "checks.h"
 #include <iostream>
-#include "admin.h"
-#include "employee.h"
 
 using namespace std;
 
@@ -23,12 +21,12 @@ void handleMainMenu(UserManager& userManager, EmployeeManager& employeeManager, 
             getInputWithRange(command, 1, 3);
 
             if (command == "1") {
-                string username;
+                string username, password;
                 cout << "Имя пользователя: ";
                 cin >> username;
                 cin.ignore();
                 cout << "Пароль: ";
-                string password = getPassword();
+                password = getPassword();
                 if (userManager.login(username, password)) {
                     loggedIn = true;
                 }

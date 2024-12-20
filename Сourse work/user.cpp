@@ -1,26 +1,22 @@
 #include "user.h"
 #include "getPassword.h"
-#include "employee.h"
 #include "checks.h"
-#include "admin.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <iomanip>
-#include <limits>
 
 using namespace std;
 
 UserManager::UserManager() {
-    loadUsersFromFile(); // Загружаем пользователей из файла
-
+    loadUsersFromFile();
     if (users.empty()) {
         string password = "admin";
         string salt = generateSalt();
         users["admin"] = { "admin", hashPassword(password, salt), encryptPassword(password, key), true, true };
         cout << "Пользователь admin создан с ролью администратора.\n";
-        saveUsersToFile(); // Сохраняем администратора в файл
+        saveUsersToFile();
     }
 }
 
@@ -29,12 +25,11 @@ bool UserManager::isCurrentUserAdmin() const {
 }
 
 void UserManager::saveUsersToFile() {
-    ofstream out(userFile, ios::out); // Открываем файл для записи
+    ofstream out(userFile, ios::out);
     if (!out) {
         cerr << "Ошибка открытия файла для записи пользователей.\n";
         return;
     }
-
     for (const auto& pair : users) {
         out << pair.second.username << " "
             << pair.second.password << " "
@@ -42,9 +37,7 @@ void UserManager::saveUsersToFile() {
             << pair.second.isAdmin << " "
             << pair.second.isActive << "\n";
     }
-
     out.close();
-    cout << "Пользователи сохранены в файл.\n";
 }
 
 void UserManager::loadUsersFromFile() {
@@ -56,12 +49,11 @@ void UserManager::loadUsersFromFile() {
     string username, salt, password, encryptedPassword;
     bool isAdmin, isActive;
     while (in >> username >> salt >> password >> encryptedPassword >> isAdmin >> isActive) {
-        password = salt + " " + password; // Воссоздаем формат с пробелом
+        password = salt + " " + password;
         users[username] = { username, password, encryptedPassword, isAdmin, isActive };
     }
     in.close();
 }
-
 
 void UserManager::registerUser(const string& username, const string& password, bool isAdmin) {
     if (users.find(username) != users.end()) {
@@ -74,8 +66,7 @@ void UserManager::registerUser(const string& username, const string& password, b
     string encryptedPassword = encryptPassword(password, key);
 
     users[username] = { username, hashedPassword, encryptedPassword, isAdmin, false };
-    saveUsersToFile(); // Сохраняем пользователя в файл
-
+    saveUsersToFile();
     cout << "Пользователь " << username << " успешно зарегистрирован. Ожидание подтверждения администратора.\n";
 }
 
@@ -85,7 +76,8 @@ bool UserManager::login(const string& username, const string& password) {
         cout << "Пользователь не найден: " << username << "\n";
         return false;
     }
-    string originalPassword = decryptPassword(it->second.encryptedPassword, key);
+    // Заменяем decryptPassword на encryptPassword
+    string originalPassword = encryptPassword(it->second.encryptedPassword, key);
     if (password != originalPassword) {
         cout << "Неправильный пароль для пользователя: " << username << "\n";
         return false;
@@ -106,7 +98,7 @@ void UserManager::logout() {
     }
     cout << "Пользователь " << currentUser << " вышел из системы.\n";
     currentUser.clear();
-    saveUsersToFile(); // Сохраняем изменения после выхода пользователя
+    saveUsersToFile();
 }
 
 void UserManager::changeUsername() {
@@ -129,7 +121,9 @@ void UserManager::changeUsername() {
         saveUsersToFile();
         cout << "Логин успешно изменен.\n";
     }
-}void UserManager::changePassword() {
+}
+
+void UserManager::changePassword() {
     if (currentUser.empty()) {
         cout << "Вы не вошли в систему.\n";
         return;
@@ -195,36 +189,6 @@ void UserManager::editUser() {
     cout << "Пользователь успешно отредактирован.\n";
 }
 
-void UserManager::assignRole() {
-    string username;
-    cout << "Введите имя пользователя для выдачи роли: ";
-    cin >> username;
-    auto it = users.find(username);
-    if (it == users.end()) {
-        cout << "Пользователь не найден.\n";
-        return;
-    }
-    cout << "Является ли пользователь администратором (1 - да, 0 - нет)? ";
-    int isAdmin;
-    cin >> isAdmin;
-    it->second.isAdmin = isAdmin;
-    saveUsersToFile();
-    cout << "Роль успешно назначена.\n";
-}
-
-void UserManager::toggleUserActivation() {
-    string username;
-    cout << "Введите имя пользователя для блокировки/разблокировки: ";
-    cin >> username;
-    auto it = users.find(username);
-    if (it == users.end()) {
-        cout << "Пользователь не найден.\n";
-        return;
-    }
-    it->second.isActive = !it->second.isActive;
-    saveUsersToFile();
-    cout << "Учетная запись пользователя " << username << (it->second.isActive ? " активирована.\n" : " заблокирована.\n");
-}
 void UserManager::deleteUser() {
     string username;
     cout << "Введите имя пользователя для удаления: ";
@@ -244,12 +208,12 @@ void UserManager::listUsers() const {
         cout << "Список пользователей пуст.\n";
         return;
     }
-    cout << left << setw(20) << "Имя пользователя" << setw(15) << "Роль" << setw(15) << "Активность" << setw(20) << "Оригинальный пароль\n";
+    cout << left << setw(20) << "Имя пользователя" << setw(15) << "Роль" << setw(15) << "Активность" << setw(20) << "Пароль\n";
     cout << "------------------------------------------------------------------------------------\n";
     for (const auto& pair : users) {
         cout << left << setw(20) << pair.second.username
             << setw(15) << (pair.second.isAdmin ? "Администратор" : "Пользователь")
             << setw(15) << (pair.second.isActive ? "Активен" : "Неактивен")
-            << setw(20) << decryptPassword(pair.second.encryptedPassword, key) << "\n";
+            << setw(20) << "Скрыт" << "\n"; // Пароль скрыт
     }
 }

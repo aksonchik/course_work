@@ -32,17 +32,13 @@ public:
     bool login(const string& username, const string& password);
     void logout();
     bool isCurrentUserAdmin() const;
-    void showUserMenu(EmployeeManager& employeeManager);
-    void showAdminMenu(EmployeeManager& employeeManager);
-    void editUser();
-    void assignRole();
-    void toggleUserActivation();
-    void deleteUser();
-    void listUsers() const;
     void changeUsername();
     void changePassword();
     void confirmUserRegistration(const string& username);
     void confirmAllUserRegistrations();
+    void editUser();
+    void deleteUser();
+    void listUsers() const;
 };
 
 #endif // USER_H

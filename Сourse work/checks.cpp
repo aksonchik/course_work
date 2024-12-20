@@ -1,73 +1,69 @@
-#include <algorithm>
+#include "checks.h"
 #include <iostream>
 #include <regex>
-#include <limits>
-#include "checks.h"
 #include <cctype>
 
-bool isValidNumber(const std::string& str) {
-   return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+using namespace std;
+
+bool isValidNumber(const string& str) {
+    return !str.empty() && all_of(str.begin(), str.end(), ::isdigit);
 }
 
-void getInput(std::string& input) {
-   while (true) {
-      std::getline(std::cin, input);
-      if (isValidNumber(input)) {
-         break;
-      }
-      else {
-         std::cout << "Введите только цифровые значения: ";
-      }
-   }
+void getInput(string& input) {
+    while (true) {
+        getline(cin, input);
+        if (isValidNumber(input)) {
+            break;
+        }
+        else {
+            cout << "Введите только цифровые значения: ";
+        }
+    }
 }
 
-void getInputWithRange(std::string& input, int min, int max) {
-   while (true) {
-      std::getline(std::cin, input);
-      if (isValidNumber(input) && std::stoi(input) >= min && std::stoi(input) <= max) {
-         break;
-      }
-      else {
-         std::cout << "Неверная команда (вводите только цифры от " << min << " до " << max << "): ";
-      }
-   }
+void getInputWithRange(string& input, int min, int max) {
+    while (true) {
+        getline(cin, input);
+        if (isValidNumber(input) && stoi(input) >= min && stoi(input) <= max) {
+            break;
+        }
+        else {
+            cout << "Неверная команда (вводите только цифры от " << min << " до " << max << "): ";
+        }
+    }
 }
 
-bool isValidDate(const std::string& date) {
-   std::regex datePattern(R"(\d{2}\.\d{2}\.\d{4})");
-   if (std::regex_match(date, datePattern)) {
-      // Дополнительная проверка на допустимость дня, месяца и года
-      int day = std::stoi(date.substr(0, 2));
-      int month = std::stoi(date.substr(3, 2));
-      int year = std::stoi(date.substr(6, 4));
+bool isValidDate(const string& date) {
+    regex datePattern(R"(\d{2}\.\d{2}\.\d{4})");
+    if (regex_match(date, datePattern)) {
+        int day = stoi(date.substr(0, 2));
+        int month = stoi(date.substr(3, 2));
+        int year = stoi(date.substr(6, 4));
 
-      if (month < 1 || month > 12) return false;
-      if (day < 1 || day > 31) return false;
-      if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) return false;
-      if (month == 2) {
-         bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-         if (day > (isLeap ? 29 : 28)) return false;
-      }
-      return true;
-   }
-   return false;
+        if (month < 1 || month > 12) return false;
+        if (day < 1 || day > 31) return false;
+        if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) return false;
+        if (month == 2) {
+            bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+            if (day > (isLeap ? 29 : 28)) return false;
+        }
+        return true;
+    }
+    return false;
 }
 
-void getDateInput(std::string& input) {
-   while (true) {
-      std::getline(std::cin, input);
-      if (isValidDate(input)) {
-         break;
-      }
-      else {
-         std::cout << "Неверный формат даты. Введите дату в формате ДД.ММ.ГГГГ: ";
-      }
-   }
+void getDateInput(string& input) {
+    while (true) {
+        getline(cin, input);
+        if (isValidDate(input)) {
+            break;
+        }
+        else {
+            cout << "Неверный формат даты. Введите дату в формате ДД.ММ.ГГГГ: ";
+        }
+    }
 }
 
-
-
-
-bool isValidProductName(const std::string& name) {
-   return name.find(' ') == std::string::npos;
+bool isValidProductName(const string& name) {
+    return name.find(' ') == string::npos;
 }
