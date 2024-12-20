@@ -1,7 +1,7 @@
 #include "admin.h"
-#include <iostream>
 #include "getPassword.h"
 #include "checks.h"
+#include <iostream>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ void handleAdminMenu(UserManager& userManager, EmployeeManager& employeeManager,
         showAdminMenu();
         string command;
         cin >> command;
-        cin.ignore();  // Убираем символ новой строки
+        cin.ignore();
 
         if (command == "1") {
             handleAdminEmployeeMenu(employeeManager);
@@ -43,7 +43,7 @@ void handleAdminMenu(UserManager& userManager, EmployeeManager& employeeManager,
             break;
         }
         else {
-            cout << "Неверная команда (вводите только цифры от 1 до 4).\n";
+            cout << "Неверная команда (вводите только цифры от 1 до 5).\n";
         }
     }
 }
@@ -62,7 +62,7 @@ void handleAdminEmployeeMenu(EmployeeManager& employeeManager) {
         showAdminEmployeeMenu();
         string command;
         cin >> command;
-        cin.ignore();  // Убираем символ новой строки
+        cin.ignore();
 
         if (command == "1") {
             employeeManager.listEmployees();
@@ -75,7 +75,6 @@ void handleAdminEmployeeMenu(EmployeeManager& employeeManager) {
             cout << "Ф.И.О. сотрудника: ";
             getline(cin, fullName);
 
-            // Запрашиваем валидный номер бригады
             teamNumber = employeeManager.getValidTeamNumber();
 
             cout << "Средний доход за последние 3 месяца: ";

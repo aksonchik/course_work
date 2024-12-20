@@ -134,7 +134,7 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="user.cpp" />
     <ClCompile Include="checks.cpp" />
-    <ClCompile Include="Сourse work.cpp" />
+    <ClCompile Include="course_work.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin.h" />

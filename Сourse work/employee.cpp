@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-#include <regex> // Для проверки ввода
+#include <regex>
 
 using namespace std;
 
@@ -41,7 +41,6 @@ void EmployeeManager::loadEmployeesFromFile() {
     in.close();
 }
 
-// Функция для получения валидного 4-значного номера бригады
 string EmployeeManager::getValidTeamNumber() const {
     string teamNumber;
     regex pattern("^\\d{4}$"); // Регулярное выражение для 4 цифр
@@ -50,7 +49,6 @@ string EmployeeManager::getValidTeamNumber() const {
         cout << "Введите номер бригады (4 цифры): ";
         cin >> teamNumber;
 
-        // Проверяем, соответствует ли ввод формату
         if (regex_match(teamNumber, pattern)) {
             return teamNumber;
         }
@@ -60,12 +58,12 @@ string EmployeeManager::getValidTeamNumber() const {
     }
 }
 
-
 void EmployeeManager::addEmployee(const string& fullName, const string& teamNumber, double averageIncome, bool communityInvolvement, double familyIncomePerCapita) {
     if (employees.find(fullName) != employees.end()) {
         cout << "Сотрудник с таким именем уже существует.\n";
         return;
     }
+
     employees[fullName] = { fullName, teamNumber, averageIncome, communityInvolvement, familyIncomePerCapita };
     saveEmployeesToFile();
     cout << "Сотрудник успешно добавлен.\n";
