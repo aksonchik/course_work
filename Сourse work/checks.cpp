@@ -51,19 +51,3 @@ bool isValidDate(const string& date) {
     }
     return false;
 }
-
-void getDateInput(string& input) {
-    while (true) {
-        getline(cin, input);
-        if (isValidDate(input)) {
-            break;
-        }
-        else {
-            cout << "Неверный формат даты. Введите дату в формате ДД.ММ.ГГГГ: ";
-        }
-    }
-}
-
-bool isValidProductName(const string& name) {
-    return name.find(' ') == string::npos;
-}
