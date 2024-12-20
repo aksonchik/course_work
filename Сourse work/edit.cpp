@@ -3,7 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <limits>
-#include <fstream>  // Добавлено для работы с файлами
+#include <fstream>  // Добавлен для работы с файлами
 
 using namespace std;
 
