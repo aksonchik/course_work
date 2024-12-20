@@ -163,45 +163,6 @@ void UserManager::confirmAllUserRegistrations() {
     cout << "–егистраци€ всех пользователей успешно подтверждена.\n";
 }
 
-void UserManager::editUser() {
-    string username;
-    cout << "¬ведите им€ пользовател€ дл€ редактировани€: ";
-    cin >> username;
-    auto it = users.find(username);
-    if (it == users.end()) {
-        cout << "ѕользователь не найден.\n";
-        return;
-    }
-    cout << "¬ведите новый пароль дл€ пользовател€ (или оставьте пустым дл€ пропуска изменени€): ";
-    string newPassword;
-    cin.ignore();
-    getline(cin, newPassword);
-    if (!newPassword.empty()) {
-        string salt = generateSalt();
-        it->second.password = hashPassword(newPassword, salt);
-        it->second.encryptedPassword = encryptPassword(newPassword, key);
-    }
-    cout << "явл€етс€ ли пользователь администратором (1 - да, 0 - нет)? ";
-    int isAdmin;
-    cin >> isAdmin;
-    it->second.isAdmin = isAdmin;
-    saveUsersToFile();
-    cout << "ѕользователь успешно отредактирован.\n";
-}
-
-void UserManager::deleteUser() {
-    string username;
-    cout << "¬ведите им€ пользовател€ дл€ удалени€: ";
-    cin >> username;
-    auto it = users.find(username);
-    if (it == users.end()) {
-        cout << "ѕользователь не найден.\n";
-        return;
-    }
-    users.erase(it);
-    saveUsersToFile();
-    cout << "ѕользователь " << username << " успешно удален.\n";
-}
 
 void UserManager::listUsers() const {
     if (users.empty()) {
